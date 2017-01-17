@@ -10,7 +10,7 @@ var webpackHotMiddleware = require('webpack-hot-middleware');
  * Require ./webpack.config.js and make a bundler from it
  */
 var webpackConfig = require('./webpack.config');
-var bundler = webpack(webpackConfig);
+var compiler = webpack(webpackConfig);
 
 /**
  * Run Browsersync and use middleware for Hot Module Replacement
@@ -18,29 +18,28 @@ var bundler = webpack(webpackConfig);
 browserSync({
     proxy: {
       target: 'http://127.0.0.1:4040',
-
       middleware: [
-        webpackDevMiddleware(bundler, {
+        webpackDevMiddleware(compiler, {
+          reload: true,
           // IMPORTANT: dev middleware can't access config, so we should
           // provide publicPath by ourselves
           publicPath: webpackConfig.output.publicPath,
-          contentBase: webpackConfig.output.publicPath,
+          // contentBase: webpackConfig.output.publicPath,
           // pretty colored output
           stats: { colors: true }
-
           // for other settings see
           // http://webpack.github.io/docs/webpack-dev-middleware.html
         }),
-
         // bundler should be the same as above
-        webpackHotMiddleware(bundler)
+        webpackHotMiddleware(compiler)
       ]
     },
-
+    ghostMode: {
+      clicks: true,
+      forms: true,
+      scroll: true
+    },
     // no need to watch '*.js' here, webpack will take care of it for us,
     // including full page reloads if HMR won't work
-    files: [
-      'public/app/public/dist/*.css',
-      'public/app/public/*.html'
-    ]
+    files: ['idontexist.css']
 });
