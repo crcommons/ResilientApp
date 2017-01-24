@@ -40,6 +40,7 @@
     "express-session": "^1.14.2",
     "extract-text-webpack-plugin": "^2.0.0-beta.5",
     "lodash": "^4.17.4",
+    "mongoose": "^4.7.8",
     "multer": "^1.2.1",
     "node-sass": "^4.3.0",
     "nodemon": "^1.11.0",

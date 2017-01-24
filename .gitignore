@@ -10,3 +10,6 @@ app/public/dist
 
 # Icon must ends with two \r.
 Icon
+
+server/env/*
+!server/env/config-example.js
