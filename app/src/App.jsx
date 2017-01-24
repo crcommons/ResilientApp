@@ -7,7 +7,7 @@ class App extends Component {
 
   render () {
     return (
-      <h1>You're in!!!</h1>
+      <h1>Resilient TBD</h1>
     )
   }
 };
