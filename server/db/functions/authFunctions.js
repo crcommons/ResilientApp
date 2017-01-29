@@ -14,7 +14,19 @@ const userFunctions = require('../functions/userFunctions.js')
 router.signUp = function(userData) {
     var hash = bcrypt.hashSync(userData.password, bcrypt.genSaltSync(7331));
     userData.password = hash
-    return userFunctions.saveUserFn(userData)
+    return userFunctions.findOrCreateUser(userData)
 }
+
+
+// router.verifyPassword = function(user, plainPass) {
+//     return db.userFunctions.findByUserName(user).then(function(userDB) {
+//         if (user !== null && userDB !== null && userDB !== []) {
+//             return bcrypt.compareSync(plainPass, userDB.password) //resolves as bool
+//         } else {
+//             return false
+//         }
+//     })
+// }
+
 
 module.exports = router
