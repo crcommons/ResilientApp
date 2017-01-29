@@ -17,16 +17,47 @@ router.signUp = function(userData) {
     return userFunctions.findOrCreateUser(userData)
 }
 
+router.verifyPassword = function(email, plainPass) {
+    return userFunctions.findByEmail(email).then((user) => {
+        if (email !== null && user !== null && user !== []) {
+            return bcrypt.compareSync(plainPass, user.password) //resolves as bool
+        } else {
+            return false
+        }
+    })
+}
 
-// router.verifyPassword = function(user, plainPass) {
-//     return db.userFunctions.findByUserName(user).then(function(userDB) {
-//         if (user !== null && userDB !== null && userDB !== []) {
-//             return bcrypt.compareSync(plainPass, userDB.password) //resolves as bool
-//         } else {
-//             return false
-//         }
-//     })
-// }
+//generates random string to set session hash
+router.randomString = function() {
+  var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+  var string_length = 25;
+  var randomstring = '';
+  for (var i=0; i<string_length; i++) {
+      var rnum = Math.floor(Math.random() * chars.length);
+      randomstring += chars.substring(rnum,rnum+1);
+  }
+  return randomstring
+}
+
+
+//actual login function
+router.login = function(user) {
+    return router.verifyPassword(user.email, user.password).then(function(verified) {
+        if (verified) {
+            //cool you got verified, now lets give you a session
+            var hash = router.randomString()
+            return userFunctions.updateSession(user, hash).then(function(userDB) {
+                return [userDB, hash]
+            })
+        } else {
+            return null
+        }
+    })
+}
+
+
+
+
 
 
 module.exports = router

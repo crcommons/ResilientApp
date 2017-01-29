@@ -72,7 +72,7 @@ describe('testing if user is already in db', () => {
 
 //TESTING THE ABILITY TO UPDATE SESSION KEYS FOR A USER
 describe('storing session in db', () => {
-	it('should set the session in the users document', (done) => {
+	xit('should set the session in the users document', (done) => {
 		userFunctions.updateSession(carolyn, 'a12kgdo8u43')
 		.then((user) => {
 			assert(user.session === 'a12kgdo8u43');
@@ -80,3 +80,26 @@ describe('storing session in db', () => {
 		})
 	})
 }) 
+
+//MAKING SURE PASSWORDS MATCH
+describe('comparing passwords', () => {
+	xit('should return true if passwords are the same', (done) => {
+		auth.verifyPassword('crcommons@gmail.com', 'abc123')
+		.then((bool) => {
+			assert(bool);
+			done()
+		})
+	})
+}) 
+
+//UPDATING SESSION WITH A HASH EVERY TIME A USER LOGS IN
+describe('logging in', () => {
+	it('should hash the key and save it to user', (done) => {
+		auth.login({email: 'crcommons@gmail.com', password:'abc123'})
+		.then((userArr) => {
+			console.log("SESSION______ ", userArr)
+			assert(userArr[0].session);
+			done()
+		})
+	})
+})
