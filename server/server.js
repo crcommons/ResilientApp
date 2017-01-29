@@ -1,11 +1,12 @@
 const path = require('path');
 const express = require('express');
 const session = require('express-session');
-const router = require('./router/router.js');
+const authRoutes = require('./router/authRoutes.js');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const config = require('./env/config')
 const db = require('./db/db.js')
+
 
 // Use express and export it
 const app = express();
@@ -22,6 +23,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // User cookie-parser to parse cookies we get from Facebook
 app.use(cookieParser());
+
+
+// app.use('/api/users', userRoutes);
+// app.use('/api/recipes', authRoutes.ensureAuthenticated,  recipeRoutes);
+app.use('/auth/', authRoutes)
 
 // Serve the static client HTML files
 app.use(express.static(path.join(__dirname, '/../app/public')));
