@@ -20,10 +20,13 @@ describe('passing a test', () => {
 var carolyn = {
 	first_name: 'Carolyn',
 	last_name: 'Commons',
-	password: 'abc123'
+	password: 'abc123',
+	email: 'crcommons@gmail.com'
 }
+
+//BASIC SAVING A NEW USER
 describe('saving a new user', () => {
-	xit('should save a new user to the DB', (done) => {
+	xit('should save a new user to the DB using saveUserFn', (done) => {
 		var newUser = userFunctions.saveUserFn(carolyn)
 		.then(() => {
 			assert(!newUser.isNew);
@@ -34,7 +37,7 @@ describe('saving a new user', () => {
 
 //TEST TO ENCRYPT AND HASH A PASSWORD
 describe('saving a new user', () => {
-	it('should save a new user to the DB', (done) => {
+	xit('should sign up new user to the DB using saveUserFn', (done) => {
 		var newUser = auth.signUp(carolyn)
 		.then(() => {
 			assert(!newUser.isNew);
@@ -42,3 +45,61 @@ describe('saving a new user', () => {
 		})
 	})
 }) 
+
+//TESTING NEW FUNCTION TO SAVE A USER (FIND OR CREATE)
+describe('saving a new user', () => {
+	xit('should save a new user to the DB using findOrCreateUser', (done) => {
+		var newUser = auth.signUp(carolyn)
+		.then(() => {
+			assert(!newUser.isNew);
+			done()
+		})
+	})
+}) 
+
+//TEST TO CONFIRM THAT IT DOES NOT CREATE A NEW USER WHEN EMAIL IS ALREADY IN DB
+//MAKE SURE USER EMAIL IS IN DB ALREADY
+describe('testing if user is already in db', () => {
+	xit('should return true because user already exists', (done) => {
+		auth.signUp(carolyn)
+		.then((newUser) => {
+			assert(newUser);
+			done()
+		})
+	})
+}) 
+
+
+//TESTING THE ABILITY TO UPDATE SESSION KEYS FOR A USER
+describe('storing session in db', () => {
+	xit('should set the session in the users document', (done) => {
+		userFunctions.updateSession(carolyn, 'a12kgdo8u43')
+		.then((user) => {
+			assert(user.session === 'a12kgdo8u43');
+			done()
+		})
+	})
+}) 
+
+//MAKING SURE PASSWORDS MATCH
+describe('comparing passwords', () => {
+	xit('should return true if passwords are the same', (done) => {
+		auth.verifyPassword('crcommons@gmail.com', 'abc123')
+		.then((bool) => {
+			assert(bool);
+			done()
+		})
+	})
+}) 
+
+//UPDATING SESSION WITH A HASH EVERY TIME A USER LOGS IN
+describe('logging in', () => {
+	it('should hash the key and save it to user', (done) => {
+		auth.login({email: 'crcommons@gmail.com', password:'abc123'})
+		.then((userArr) => {
+			console.log("SESSION______ ", userArr)
+			assert(userArr[0].session);
+			done()
+		})
+	})
+})
